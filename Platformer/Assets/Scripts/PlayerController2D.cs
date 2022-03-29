@@ -12,6 +12,10 @@ public class PlayerController2D : MonoBehaviour
     bool isJumping;
     float jumpTimeCounter;
 
+    //jumps
+    public int extraJumps;
+    int jumpCounter = 0;
+
     //move state
     public float moveSpeed;
     float moveInput;
@@ -31,16 +35,18 @@ public class PlayerController2D : MonoBehaviour
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
         {
             isGrounded = true;
+            jumpCounter = extraJumps;
         }
         else
         {
             isGrounded = false;
         }
 
-        if ((Input.GetKeyDown("space") || Input.GetKeyDown("w")) && isGrounded)
+        if ((Input.GetKeyDown("space") || Input.GetKeyDown("w")) && (isGrounded || jumpCounter > 0))
         {
             isJumping = true;
             jumpTimeCounter = jumpTime;
+            jumpCounter--;
         }
 
         if (Input.GetKeyUp("space") || Input.GetKeyUp("w"))
